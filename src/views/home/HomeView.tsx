@@ -5,7 +5,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import Image from "next/image";
 
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import { Pagination, Autoplay } from "swiper/modules";
 
 // Banner Data
 const banners = [
@@ -75,10 +75,9 @@ export default function HomeView() {
       {/* Banner Swiper */}
       <section className="mb-12">
         <Swiper
-          modules={[Navigation, Pagination, Autoplay]}
+          modules={[Pagination, Autoplay]}
           spaceBetween={50}
           slidesPerView={1}
-          navigation={true}
           pagination={{ clickable: true }}
           autoplay={{ delay: 3000 }}
           loop={true}

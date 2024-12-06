@@ -12,13 +12,13 @@ export default function ProductsView() {
   const cartStore = useCartStore();
 
   return (
-    <div className="flex flex-col md:flex-row justify-center md:items-center gap-5 mt-10 container mx-auto">
+    <div className="flex flex-col md:flex-row justify-center gap-5 mt-10 container mx-auto">
       <Aside />
       <div className="flex flex-col gap-3 w-full">
         <h2 className="text-lg font-bold">
           {search ? `Productos para: ${search}` : "Todos los productos"}
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mx-auto">
           {fakeProducts.map((product, index) => (
             <ProductCard key={index} product={product} cartStore={cartStore} />
           ))}

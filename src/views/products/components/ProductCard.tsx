@@ -74,6 +74,7 @@ export default function ProductCard({ product, cartStore }: ProductCardProps) {
         ) : (
           <button
             onClick={(e) => {
+              e.preventDefault();
               e.stopPropagation();
               handleAddToCart();
             }}
