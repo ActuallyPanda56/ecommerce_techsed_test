@@ -3,17 +3,56 @@
 @tailwind utilities;
 
 :root {
+  /* Background and Foreground */
   --background: #ffffff;
   --foreground: #171717;
+  --muted: #c2c4c1;
+
+  /* Primary Colors */
+  --primary: #254a96;
+  --primary-light: #3c82f5;
+  --primary-dark: #1a3a75;
+
+  /* Success */
+  --success: #25c45f;
+  --success-light: #4be28c;
+  --success-dark: #1a8c42;
+
+  /* Warning */
+  --warning: #f39c12;
+  --warning-light: #f5b643;
+  --warning-dark: #d4880f;
+
+  /* Error */
+  --error: #e74c3c;
+  --error-light: #ef7265;
+  --error-dark: #c0392b;
+
+  /* Info */
+  --info: #3498db;
+  --info-light: #5dade2;
+  --info-dark: #2c7ebf;
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
+} */
+
+/* Hide number input spinners (for Chrome, Safari, Edge, Opera) */
+.no-spinner::-webkit-outer-spin-button,
+.no-spinner::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
+/* Hide number input spinners (for Firefox) */
+.no-spinner {
+  appearance: none;
+  -moz-appearance: textfield;
+}
 body {
   color: var(--foreground);
   background: var(--background);
