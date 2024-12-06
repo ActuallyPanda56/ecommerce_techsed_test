@@ -80,7 +80,11 @@ export default function ProductForm({ product }: { product: Product }) {
   };
 
   const handleUnitBlur = () => {
-    setFieldValue("unitInput", values.quantityInput * (product.unitValue || 1));
+    const value = values.quantityInput * (product.unitValue || 1);
+    setFieldValue(
+      "unitInput",
+      product.salesUnit === "area" ? parseFloat(value.toFixed(2)) : value
+    );
   };
 
   const handleAddOne = () => {
