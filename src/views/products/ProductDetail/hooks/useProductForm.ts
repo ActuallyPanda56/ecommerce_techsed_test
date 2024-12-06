@@ -14,7 +14,7 @@ export function useProductForm(product: Product) {
   )?.quantity;
 
   const initialValues = {
-    unitInput: product.unitValue || 1,
+    unitInput: (product.unitValue ?? 1) * (productQuantity || 1),
     quantityInput: productQuantity || 1,
   };
 
