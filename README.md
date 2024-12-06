@@ -1,40 +1,87 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+```markdown
+# Ecommerce TechSed Test
 
-## Getting Started
+## Introduction
 
-First, run the development server:
+Ecommerce TechSed Test is a sample e-commerce project designed to demonstrate the use of modern web development technologies. It includes features such as product listings, product details, and a dynamic footer and layout system. The project is built with scalability in mind and focuses on providing a smooth user experience with a responsive design.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Installation
+
+To run the project locally, follow these steps:
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. Clone the repository:
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+```bash
+git clone https://github.com/yourusername/ecommerce-techsed.git
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+2. Navigate to the project directory:
+   ```bash
+   cd ecommerce-techsed
+   ```
+3. Install the required dependencies:
+   ```bash
+   npm install
+   ```
+4. Run the development server:
+   ```bash
+   npm run dev
+   ```
+5. Open your browser and go to `http://localhost:3000` to view the application.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+### Running Tests
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+To run the tests, use the following command:
 
-## Learn More
+```bash
+npm run test
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Technologies
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The project uses the following technologies and packages:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- **Next.js pages router** - Used due to situational judgment test featuring answers exclusive to pages router. I decided it would be better to make the test in the technology used in day to day work at your company
+- **Tailwind CSS** - Utility-first CSS framework for creating custom designs without leaving your HTML.
+- **Formik** - Form management library to handle forms in React applications.
+- **Jest** - Testing framework for unit and integration tests. Right now only product form implementation test is working.
+- **React Testing Library** - A testing library for React to encourage best practices.
 
-## Deploy on Vercel
+## Criterios de Evaluación
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 1. Manejo de React
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- **Uso eficiente de Hooks (como useState y useEffect)**:
+  En mi proyecto, utilizo `useState` para manejar los estados locales de los componentes, como la visibilidad de los menús móviles o el estado de las entradas del formulario. `useEffect` se emplea para realizar tareas como la carga de estados de cliente lo que garantiza que el proyecto sea reactivo y eficiente. Por ejemplo, en el componente `NavbarPrincipal`, `useState` se utiliza para manejar el estado del menú móvil. `useEffect` se usa en `ProductCard` para verificar que el componente Link se cargue en cliente para evitar problemas de Hydration.
+
+- **Creación de componentes reutilizables y dinámicos**:
+  He diseñado componentes modulares que pueden ser reutilizados en diferentes partes del proyecto, como botones, formularios, y tarjetas de productos. Esto permite una fácil expansión y mantenimiento del código, ya que cualquier cambio en un componente se refleja automáticamente en todas las instancias donde se utiliza. Por ejemplo, el componente `Principal Layout` se utiliza en todas las rutar denotadas en un archivo de configuración en `src/layouts` permitiendo el uso dinámico de componentes.
+
+### 2. Modelado de Datos
+
+- **Organización y manejo de la estructura del producto**:
+  La estructura del producto en el proyecto está cuidadosamente organizada, utilizando un enfoque basado en objetos y arrays para modelar los productos, sus variantes y detalles relacionados. Esto facilita la gestión de la información y permite una fácil extensión en caso de agregar nuevos atributos o relaciones entre productos. Por ejemplo, los productos se modelan con propiedades como `id`, `title`, `description`, `price`, `stock`, `salesUnit`, y `measurementUnit`, lo que permite una gestión clara y estructurada de los datos del producto.
+
+- **Validaciones basadas en el tipo de producto**:
+  He implementado validaciones en los formularios de entrada que aseguran que los datos proporcionados por el usuario sean correctos según el tipo de producto. Esto incluye validaciones como asegurarse de que los precios estén en el formato correcto o que los campos obligatorios no estén vacíos, lo que mejora la integridad de los datos y la experiencia del usuario. Por ejemplo, en el componente `ProductForm`, se valida que la cantidad ingresada sea un número positivo y que el precio esté en el formato correcto antes de permitir la sumisión del formulario.
+
+### 3. Interfaz de Usuario
+
+- **Facilidad de uso y claridad del diseño**:
+  El diseño de la interfaz está enfocado en ser intuitivo y fácil de usar. Los elementos clave están claramente definidos, con botones y formularios bien etiquetados, lo que permite que los usuarios naveguen sin dificultad. Por ejemplo, en la vista de detalles del producto, los botones de "Comprar ahora" y "Agregar al carrito" están claramente etiquetados y posicionados de manera prominente para facilitar la interacción del usuario.
+
+- **Capacidad de adaptarse a pantallas de teléfono**:
+  He utilizado principios de diseño responsivo, aplicando media queries y unidades relativas para asegurar que el proyecto se ajuste adecuadamente a diferentes tamaños de pantalla, especialmente a teléfonos móviles. Esto asegura que los usuarios tengan una experiencia de usuario fluida y consistente en todos los dispositivos. Por ejemplo, el componente `NavbarPrincipal` se adapta a pantallas móviles mostrando un menú desplegable en lugar de la barra de navegación completa.
+
+### 4. Código limpio y estructurado
+
+- **Buenas prácticas de desarrollo**:
+  He seguido buenas prácticas en cuanto a la organización del código, como el uso de un enfoque modular para los componentes y la separación de la lógica de la presentación. Además, utilizo convenciones de nomenclatura coherentes y legibles para facilitar la comprensión del código. Por ejemplo, los componentes están organizados en carpetas según su funcionalidad, y los nombres de las variables y funciones siguen un esquema de nomenclatura consistente y descriptivo.
+
+- **Uso de comentarios para explicar la lógica**:
+  El código está bien documentado, con comentarios claros que explican la lógica detrás de las funciones y las decisiones importantes. Esto facilita el mantenimiento y la colaboración, además de garantizar que cualquier desarrollador que trabaje en el proyecto pueda entender rápidamente el propósito de cada sección de código. Por ejemplo, en el archivo `ProductForm.tsx`, se incluyen comentarios que explican la lógica de sanitización de entradas y la configuración de unidades de venta.
+
+## Licence
+
+This project is licensed under the MIT License
