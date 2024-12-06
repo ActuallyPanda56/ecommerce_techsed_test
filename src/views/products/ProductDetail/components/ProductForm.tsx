@@ -26,42 +26,40 @@ const salesUnit = {
   },
 };
 
+export const sanitizeInput = (value: string, type: string) => {
+  value =
+    type === "area"
+      ? value.replace(/[^0-9.]/g, "")
+      : value.replace(/[^0-9]/g, "");
+
+  // Remove leading zeros (Currently not working)
+  if (value.startsWith("0") && value.length > 2 && !value.startsWith("0.")) {
+    value = value.replace(/^0+/, ""); // Strip out all leading zeros
+  }
+
+  // Remove leading decimal point
+  if (value.startsWith(".")) {
+    value = "0" + value;
+  }
+
+  // Limit to 2 decimal places for area
+  if (type === "area") {
+    value = parseFloat(value).toFixed(2);
+  }
+  return value;
+};
+
 export default function ProductForm({ product }: { product: Product }) {
   const formikContext = useFormikContext<
     FormikValues & { [key: string]: never }
   >();
   const { setFieldValue, values } = formikContext;
-  console.log(values);
-
-  const sanitizeInput = (value: string, type: string) => {
-    value =
-      type === "area"
-        ? value.replace(/[^0-9.]/g, "")
-        : value.replace(/[^0-9]/g, "");
-
-    // Remove leading zeros (Currently not working)
-    if (value.startsWith("0") && value.length > 2 && !value.startsWith("0.")) {
-      value = value.replace(/^0+/, ""); // Strip out all leading zeros
-    }
-
-    // Remove leading decimal point
-    if (value.startsWith(".")) {
-      value = "0" + value;
-    }
-
-    // Limit to 2 decimal places for area
-    if (type === "area" && value.length > 4 && value.includes(".")) {
-      return value.slice(0, 4);
-    }
-    return value;
-  };
 
   const handleUnitInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = sanitizeInput(e.target.value, product.salesUnit);
     const maxValue = product.stock * (product.unitValue || 1);
     const parsedValue =
       value === "" ? "" : Math.min(parseFloat(value) || 0, maxValue);
-    console.log("UnitINput", parsedValue);
     setFieldValue("unitInput", parsedValue);
     const calculatedQuantity =
       value === ""
@@ -77,12 +75,8 @@ export default function ProductForm({ product }: { product: Product }) {
     const parsedValue =
       value === "" ? 1 : Math.min(parseInt(value) || 1, product.stock);
 
-    console.log(parsedValue);
     setFieldValue("quantityInput", parsedValue);
-    setFieldValue(
-      "unitInput",
-      parsedValue ? "" : parsedValue * (product.unitValue || 1)
-    );
+    setFieldValue("unitInput", parsedValue * (product.unitValue || 1));
   };
 
   const handleUnitBlur = () => {
@@ -128,6 +122,7 @@ export default function ProductForm({ product }: { product: Product }) {
                 <Field
                   type="number"
                   name="unitInput"
+                  aria-label="unitInput"
                   value={values.unitInput}
                   placeholder={product.unitValue?.toString() || "1"}
                   min={product.salesUnit === "area" ? "0.01" : "1"}
@@ -164,12 +159,14 @@ export default function ProductForm({ product }: { product: Product }) {
                   ? "cursor-not-allowed hover:bg-gray-200"
                   : ""
               }`}
+              aria-label="decrement quantity"
             >
               <BiMinus />
             </button>
             <Field
               type="number"
               name="quantityInput"
+              aria-label="quantityInput"
               min="1"
               max={product.stock}
               step="1"
@@ -183,6 +180,7 @@ export default function ProductForm({ product }: { product: Product }) {
                   ? "cursor-not-allowed hover:bg-gray-200"
                   : ""
               }`}
+              aria-label="increment quantity"
             >
               <BiPlus />
             </button>

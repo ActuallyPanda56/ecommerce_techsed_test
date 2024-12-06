@@ -63,6 +63,15 @@ export const fakeProducts: Product[] = [
     stock: 5,
     salesUnit: "unit",
   },
+  {
+    id: "20015",
+    title: "Cemento Portland 50 kg",
+    description: "Cemento de alta resistencia, bolsa de 50 kg",
+    price: 2750,
+    listingPrice: 3200,
+    stock: 10,
+    salesUnit: "unit",
+  },
 ];
 
 /* export const fakeProducts: Product[] = [
