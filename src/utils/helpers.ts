@@ -43,7 +43,7 @@ export const sanitizeInput = (value: string, type: string) => {
   }
 
   // Limit to 2 decimal places for area
-  if (isFloating) {
+  if (isFloating && value.includes(".")) {
     value = parseFloat(value).toFixed(2);
   }
 
@@ -65,12 +65,13 @@ export const sanitizeInput = (value: string, type: string) => {
  */
 export const parseValues = (value: string, product: Product, type: string) => {
   const { stock, unitValue } = product;
+
   // Limit to stock
-  const isEmpty = value === "";
+  const isEmpty = value == "";
   const maxValue = stock * (unitValue || 1);
   let calculatedUnit, calculatedQuantity;
 
-  const isFloating = floatingTypes.includes(type);
+  const isFloating = floatingTypes.includes(product.salesUnit);
 
   switch (type) {
     case "unit":
@@ -85,12 +86,15 @@ export const parseValues = (value: string, product: Product, type: string) => {
       return { calculatedUnit, calculatedQuantity };
     default:
     case "quantity":
-      calculatedUnit =
-        value === "" ? 1 : Math.min(parseInt(value) || 1, product.stock);
+      calculatedQuantity = isEmpty
+        ? 1
+        : Math.min(parseInt(value) || 1, product.stock);
 
-      calculatedQuantity = isFloating
-        ? parseFloat(calculatedUnit.toFixed(2))
-        : calculatedUnit;
+      calculatedUnit = isFloating
+        ? parseFloat(
+            (calculatedQuantity * (product.unitValue || 1)).toString()
+          ).toFixed(2)
+        : calculatedQuantity * (product.unitValue || 1);
 
       return { calculatedUnit, calculatedQuantity };
   }

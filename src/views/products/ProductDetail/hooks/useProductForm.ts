@@ -30,18 +30,20 @@ export function useProductForm(product: Product) {
     addItem(quantityInput);
   }
 
-  const handleUnitInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleUnitInputChange = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const value = sanitizeInput(e.target.value, product.salesUnit);
     const { calculatedUnit, calculatedQuantity } = parseValues(
       value,
       product,
       "unit"
     );
-    formik.setFieldValue("unitInput", calculatedUnit);
-    formik.setFieldValue("quantityInput", calculatedQuantity || 1);
+    await formik.setFieldValue("unitInput", calculatedUnit);
+    await formik.setFieldValue("quantityInput", calculatedQuantity || 1);
   };
 
-  const handleQuantityInputChange = (
+  const handleQuantityInputChange = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     const value = sanitizeInput(e.target.value, product.salesUnit);
@@ -51,36 +53,36 @@ export function useProductForm(product: Product) {
       "quantity"
     );
 
-    formik.setFieldValue("quantityInput", calculatedUnit);
-    formik.setFieldValue("unitInput", calculatedQuantity);
+    await formik.setFieldValue("unitInput", calculatedUnit);
+    await formik.setFieldValue("quantityInput", calculatedQuantity);
   };
 
-  const handleUnitBlur = () => {
+  const handleUnitBlur = async () => {
     const value = formik.values.quantityInput * (product.unitValue || 1);
-    formik.setFieldValue("unitInput", value);
+    await formik.setFieldValue("unitInput", value);
   };
 
-  const handleAddOne = () => {
+  const handleAddOne = async () => {
     const currentQuantity = formik.values.quantityInput || 0;
     const newQuantity = Math.min(currentQuantity + 1, product.stock);
     const newUnitValue = newQuantity * (product.unitValue || 1);
 
     const isFloating = floatingTypes.includes(product.salesUnit);
-    formik.setFieldValue("quantityInput", newQuantity);
-    formik.setFieldValue(
+    await formik.setFieldValue("quantityInput", newQuantity);
+    await formik.setFieldValue(
       "unitInput",
       isFloating ? parseFloat(newUnitValue.toFixed(2)) : newUnitValue
     );
   };
 
-  const handleRemoveOne = () => {
+  const handleRemoveOne = async () => {
     const currentQuantity = formik.values.quantityInput || 1;
     const newQuantity = Math.max(currentQuantity - 1, 1);
     const newUnitValue = newQuantity * (product.unitValue || 1);
 
     const isFloating = floatingTypes.includes(product.salesUnit);
-    formik.setFieldValue("quantityInput", newQuantity);
-    formik.setFieldValue(
+    await formik.setFieldValue("quantityInput", newQuantity);
+    await formik.setFieldValue(
       "unitInput",
       isFloating ? parseFloat(newUnitValue.toFixed(2)) : newUnitValue
     );
