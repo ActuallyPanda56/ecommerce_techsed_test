@@ -11,6 +11,7 @@
     "test-no-cache": "jest --clearCache && jest"
   },
   "dependencies": {
+    "@testing-library/user-event": "^14.5.2",
     "formik": "^2.4.6",
     "next": "14.2.16",
     "rc-slider": "^11.1.7",
