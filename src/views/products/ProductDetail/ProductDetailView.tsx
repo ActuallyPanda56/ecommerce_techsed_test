@@ -166,10 +166,10 @@ export default function ProductDetailView({ product }: { product: Product }) {
                       ? () => {}
                       : submitForm
                   }
-                  className={`flex-1 py-3 bg-background border border-primary hover:text-background rounded-full hover:bg-primaryDark transition-colors text-center ${
+                  className={`flex-1 py-3 bg-background border border-primary hover:text-background rounded-full transition-colors text-center ${
                     productQuantity === values.quantityInput
                       ? "cursor-not-allowed hover:bg-gray-300 hover:text-foreground hover:border-gray-600"
-                      : ""
+                      : "hover:bg-primaryDark"
                   }`}
                 >
                   Cambiar cantidad
