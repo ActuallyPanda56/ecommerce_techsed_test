@@ -25,6 +25,8 @@ export interface Cart {
   createdAt: Date;
 }
 
+export const floatingTypes = ["area"];
+
 export const fakeProducts: Product[] = [
   {
     id: "100012",

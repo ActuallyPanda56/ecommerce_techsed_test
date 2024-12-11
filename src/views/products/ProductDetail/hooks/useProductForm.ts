@@ -1,6 +1,7 @@
-import { Product } from "@/components/constants";
-import useCartStore from "@/store/cart";
+import { floatingTypes, Product } from "@/components/constants";
 import { useFormik } from "formik";
+import { parseValues, sanitizeInput } from "@/utils/helpers";
+import { useCart } from "@/hooks/useCart";
 
 interface ProductFormValues {
   unitInput: number;
@@ -8,10 +9,7 @@ interface ProductFormValues {
 }
 
 export function useProductForm(product: Product) {
-  const cartStore = useCartStore();
-  const productQuantity = cartStore.cart.items.find(
-    (item) => item.product.id === product.id
-  )?.quantity;
+  const { productQuantity, addItem, updateQuantity } = useCart(product);
 
   const initialValues = {
     unitInput: (product.unitValue ?? 1) * (productQuantity || 1),
@@ -26,19 +24,74 @@ export function useProductForm(product: Product) {
   function submitForm() {
     const { quantityInput } = formik.values;
     if (productQuantity !== undefined) {
-      cartStore.updateQuantity(product.id, quantityInput);
+      updateQuantity(quantityInput);
       return;
     }
-    cartStore.addItem(product, quantityInput);
+    addItem(quantityInput);
   }
 
-  function isInCart() {
-    return productQuantity !== undefined;
-  }
+  const handleUnitInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = sanitizeInput(e.target.value, product.salesUnit);
+    const { calculatedUnit, calculatedQuantity } = parseValues(
+      value,
+      product,
+      "unit"
+    );
+    formik.setFieldValue("unitInput", calculatedUnit);
+    formik.setFieldValue("quantityInput", calculatedQuantity || 1);
+  };
+
+  const handleQuantityInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const value = sanitizeInput(e.target.value, product.salesUnit);
+    const { calculatedUnit, calculatedQuantity } = parseValues(
+      value,
+      product,
+      "quantity"
+    );
+
+    formik.setFieldValue("quantityInput", calculatedUnit);
+    formik.setFieldValue("unitInput", calculatedQuantity);
+  };
+
+  const handleUnitBlur = () => {
+    const value = formik.values.quantityInput * (product.unitValue || 1);
+    formik.setFieldValue("unitInput", value);
+  };
+
+  const handleAddOne = () => {
+    const currentQuantity = formik.values.quantityInput || 0;
+    const newQuantity = Math.min(currentQuantity + 1, product.stock);
+    const newUnitValue = newQuantity * (product.unitValue || 1);
+
+    const isFloating = floatingTypes.includes(product.salesUnit);
+    formik.setFieldValue("quantityInput", newQuantity);
+    formik.setFieldValue(
+      "unitInput",
+      isFloating ? parseFloat(newUnitValue.toFixed(2)) : newUnitValue
+    );
+  };
+
+  const handleRemoveOne = () => {
+    const currentQuantity = formik.values.quantityInput || 1;
+    const newQuantity = Math.max(currentQuantity - 1, 1);
+    const newUnitValue = newQuantity * (product.unitValue || 1);
+
+    const isFloating = floatingTypes.includes(product.salesUnit);
+    formik.setFieldValue("quantityInput", newQuantity);
+    formik.setFieldValue(
+      "unitInput",
+      isFloating ? parseFloat(newUnitValue.toFixed(2)) : newUnitValue
+    );
+  };
 
   return {
     formik,
-    isInCart,
-    removeItem: () => cartStore.removeItem(product.id),
+    handleUnitInputChange,
+    handleQuantityInputChange,
+    handleUnitBlur,
+    handleAddOne,
+    handleRemoveOne,
   };
 }

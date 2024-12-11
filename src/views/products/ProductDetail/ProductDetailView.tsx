@@ -4,15 +4,26 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { BiArrowBack, BiCheckCircle } from "react-icons/bi";
 import { VscError } from "react-icons/vsc";
-import ProductForm from "./components/ProductForm";
 import { useProductForm } from "./hooks/useProductForm";
 import { FormikProvider } from "formik";
 import { FiShoppingCart } from "react-icons/fi";
+import ProductUnitForm from "./components/ProductUnitForm";
+import ProductAreaForm from "./components/ProductAreaForm";
+import ProductGroupForm from "./components/ProductGroupForm";
+import { useCart } from "@/hooks/useCart";
 
 export default function ProductDetailView({ product }: { product: Product }) {
   const router = useRouter();
-  const { formik, isInCart, removeItem } = useProductForm(product);
-  const { submitForm } = formik;
+  const { removeItem, isInCart, productQuantity } = useCart(product);
+  const {
+    formik,
+    handleAddOne,
+    handleRemoveOne,
+    handleQuantityInputChange,
+    handleUnitInputChange,
+    handleUnitBlur,
+  } = useProductForm(product);
+  const { submitForm, values } = formik;
 
   const formattedPrice = formatPrice(product.price);
   const formattedUnitValue =
@@ -36,6 +47,37 @@ export default function ProductDetailView({ product }: { product: Product }) {
     submitForm();
     router.push("/cart");
   }
+
+  const productForm = {
+    unit: (
+      <ProductUnitForm
+        product={product}
+        handleAddOne={handleAddOne}
+        handleRemoveOne={handleRemoveOne}
+        handleQuantityInputChange={handleQuantityInputChange}
+      />
+    ),
+    group: (
+      <ProductGroupForm
+        product={product}
+        handleAddOne={handleAddOne}
+        handleRemoveOne={handleRemoveOne}
+        handleQuantityInputChange={handleQuantityInputChange}
+        handleUnitInputChange={handleUnitInputChange}
+        handleUnitBlur={handleUnitBlur}
+      />
+    ),
+    area: (
+      <ProductAreaForm
+        product={product}
+        handleAddOne={handleAddOne}
+        handleRemoveOne={handleRemoveOne}
+        handleQuantityInputChange={handleQuantityInputChange}
+        handleUnitInputChange={handleUnitInputChange}
+        handleUnitBlur={handleUnitBlur}
+      />
+    ),
+  };
 
   return (
     <FormikProvider value={formik}>
@@ -95,7 +137,8 @@ export default function ProductDetailView({ product }: { product: Product }) {
               </p>
             )}
 
-            <ProductForm product={product} />
+            {/* Carga dinámicamente el formulario dependiendo de la unidad de venta */}
+            {productForm[product.salesUnit]}
 
             <p className="mt-5 text-gray-400">{product.description}</p>
             <button
@@ -118,8 +161,16 @@ export default function ProductDetailView({ product }: { product: Product }) {
               <div className="flex flex-col sm:flex-row gap-3 mt-4">
                 <button
                   type="button"
-                  onClick={submitForm}
-                  className="flex-1 py-3 bg-background border border-primary hover:text-background rounded-full hover:bg-primaryDark transition-colors text-center"
+                  onClick={
+                    productQuantity === values.quantityInput
+                      ? () => {}
+                      : submitForm
+                  }
+                  className={`flex-1 py-3 bg-background border border-primary hover:text-background rounded-full hover:bg-primaryDark transition-colors text-center ${
+                    productQuantity === values.quantityInput
+                      ? "cursor-not-allowed hover:bg-gray-300 hover:text-foreground hover:border-gray-600"
+                      : ""
+                  }`}
                 >
                   Cambiar cantidad
                 </button>
