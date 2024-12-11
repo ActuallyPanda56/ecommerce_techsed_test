@@ -85,3 +85,28 @@ The project uses the following technologies and packages:
 ## Licence
 
 This project is licensed under the MIT License
+
+## Cambios realizados después del refactor
+
+### 1. Reorganización de funciones para encapsular lógica
+
+- **Funciones auxiliares**: Moví funciones como `sanitizeInput` y `parseValue` a `utils/helpers.ts`, mejorando la legibilidad y reduciendo la complejidad dentro de los componentes principales.
+- **Hooks personalizados**: Encapsulé la lógica de manejo de eventos para formularios en un hook reutilizable. Este hook sirve como plantilla base adaptable para cada tipo de producto, promoviendo la modularidad y el mantenimiento del código.
+
+### 2. Layouts y Footers dinámicos
+
+- Anteriormente, los layouts y footers de rutas dinámicas se definían a través de un objeto de mapeado con rutas específicas, como `/productos` o `/users`, y admitían rutas dinámicas como `/productos/[slug]` solo si estaban explícitamente definidas.
+- Ahora, implementé un **sistema de enrutado dinámico generalizado** que soporta el nesteo automático de rutas. Esto permite manejar layouts y footers dinámicos para cualquier nivel de rutas sin necesidad de agregar cada string manualmente.
+
+### 3. Formularios personalizados por unidad de venta
+
+- Separé los formularios en componentes individuales específicos para cada tipo de unidad de venta. Este enfoque:
+  - Mejora la legibilidad del código.
+  - Permite una personalización granular de cada formulario.
+  - Facilita la expansión del sistema para admitir nuevas unidades de venta con menor esfuerzo.
+
+### 4. Tests de integración
+
+- Previamente, los tests unitarios eran suficientes porque toda la lógica se encontraba dentro de un solo componente.
+- Tras el refactor, añadí **tests de integración** para garantizar que los componentes interactúen correctamente con los nuevos manejadores de eventos.
+- Por ahora, como prueba inicial, solo se testea el formulario para la unidad de venta de área, pero este enfoque será escalable para otros formularios en el futuro.
