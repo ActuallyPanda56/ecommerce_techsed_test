@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import React from "react";
 import PrincipalFooter from "./principal";
-import { footersMap, dynamicFootersRules } from "./footers-map";
+import { staticFootersMap, dynamicFootersRules } from "./footers-map";
 
 interface Props {
   children: JSX.Element;
@@ -11,7 +11,7 @@ const FooterWrapper = ({ children }: Props) => {
   const router = useRouter();
   const pathname = router.pathname;
 
-  const staticFooter = footersMap[pathname] || PrincipalFooter;
+  const staticFooter = staticFootersMap[pathname] || PrincipalFooter;
   const dynamicFooterRule = dynamicFootersRules.find((rule) =>
     rule.pattern.test(pathname)
   );
